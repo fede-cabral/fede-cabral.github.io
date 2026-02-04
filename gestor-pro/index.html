@@ -101,8 +101,8 @@
 let tasks    = JSON.parse(localStorage.getItem("tasks"))    || [];
 let incomes  = JSON.parse(localStorage.getItem("incomes"))  || [];
 let expenses = JSON.parse(localStorage.getItem("expenses")) || [];
-let goals    = JSON.parse(localStorage.getItem("goals"))    || [];
-let budget = Number(localStorage.getItem("budget")) || 0;
+let budget   = Number(localStorage.getItem("budget")) || 0;
+
 
 /* ================= ELEMENTOS ================= */
 
@@ -119,12 +119,12 @@ const amountInput = document.getElementById("amountInput");
 const expenseList = document.getElementById("expenseList");
 const expenseTotal= document.getElementById("expenseTotal");
 
-const goalInput = document.getElementById("goalInput");
-const goalList  = document.getElementById("goalList");
-
 const bIncome  = document.getElementById("bIncome");
 const bExpense = document.getElementById("bExpense");
 const balanceText = document.getElementById("balanceText");
+
+const budgetTotal = document.getElementById("budgetTotal");
+const budgetAvailable = document.getElementById("budgetAvailable");
 
 
 /* ================= GUARDAR ================= */
@@ -132,7 +132,6 @@ const balanceText = document.getElementById("balanceText");
 function saveData() {
     localStorage.setItem("tasks", JSON.stringify(tasks));
     localStorage.setItem("expenses", JSON.stringify(expenses));
-    localStorage.setItem("goals", JSON.stringify(goals));
     localStorage.setItem("incomes", JSON.stringify(incomes));
     localStorage.setItem("budget", budget);
 }
@@ -150,16 +149,16 @@ taskList.innerHTML="";
 
 tasks.forEach((t,i)=>{
 
-const li=document.createElement("li");
-li.textContent=t;
+    const li=document.createElement("li");
+    li.textContent=t;
 
-li.onclick=()=>{
-tasks.splice(i,1);
-saveData();
-render();
-};
+    li.onclick=()=>{
+        tasks.splice(i,1);
+        saveData();
+        render();
+    };
 
-taskList.appendChild(li);
+    taskList.appendChild(li);
 
 });
 
@@ -171,18 +170,18 @@ let totalInc=0;
 
 incomes.forEach((e,i)=>{
 
-const li=document.createElement("li");
-li.textContent=`${e.desc} - $${e.amount}`;
+    const li=document.createElement("li");
+    li.textContent=`${e.desc} - $${e.amount}`;
 
-li.onclick=()=>{
-incomes.splice(i,1);
-saveData();
-render();
-};
+    li.onclick=()=>{
+        incomes.splice(i,1);
+        saveData();
+        render();
+    };
 
-totalInc+=Number(e.amount);
+    totalInc+=Number(e.amount);
 
-incomeList.appendChild(li);
+    incomeList.appendChild(li);
 
 });
 
@@ -196,100 +195,27 @@ let totalExp=0;
 
 expenses.forEach((e,i)=>{
 
-const li=document.createElement("li");
-li.textContent=`${e.desc} - $${e.amount}`;
+    const li=document.createElement("li");
+    li.textContent=`${e.desc} - $${e.amount}`;
 
-li.onclick=()=>{
-expenses.splice(i,1);
-saveData();
-render();
-};
+    li.onclick=()=>{
+        expenses.splice(i,1);
+        saveData();
+        render();
+    };
 
-totalExp+=Number(e.amount);
+    totalExp+=Number(e.amount);
 
-expenseList.appendChild(li);
+    expenseList.appendChild(li);
 
 });
 
 expenseTotal.textContent=totalExp;
 
 
-/* METAS */
+/* ================= PRESUPUESTO ================= */
 
-goalList.innerHTML="";
-
-goals.forEach((g,i)=>{
-
-const li=document.createElement("li");
-li.textContent=g;
-
-li.onclick=()=>{
-goals.splice(i,1);
-saveData();
-render();
-};
-
-goalList.appendChild(li);
-
-});
-
-
-/* BALANCE */
-
-bIncome.textContent=totalInc;
-bExpense.textContent=totalExp;
-
-const balance=totalInc-totalExp;
-
-if(balance>0){
-balanceText.textContent=`🟢 Vas ganando $${balance}`;
-balanceText.style.color="lime";
-}
-else if(balance<0){
-balanceText.textContent=`🔴 Estás perdiendo $${Math.abs(balance)}`;
-balanceText.style.color="red";
-}
-else{
-balanceText.textContent="⚪ En equilibrio";
-balanceText.style.color="white";
-}
-
-
-/* GRAFICO */
-
-if(chart) chart.destroy();
-
-const ctx=document.getElementById("chart");
-
-chart=new Chart(ctx,{
-type:"bar",
-data:{
-labels:["Ingresos","Gastos"],
-datasets:[{
-label:"Balance",
-data:[totalInc,totalExp],
-backgroundColor:["#22c55e","#ef4444"]
-}]
-},
-options:{
-responsive:true,
-plugins:{
-legend:{display:false}
-}
-}
-});
-
-}
-    
-// Presupuesto
-const budgetTotal = document.getElementById("budgetTotal");
-const budgetAvailable = document.getElementById("budgetAvailable");
-
-let spent = 0;
-
-expenses.forEach(e => {
-    spent += Number(e.amount);
-});
+let spent = totalExp;
 
 budgetTotal.textContent = budget;
 
@@ -303,69 +229,103 @@ if(available < 0){
     budgetAvailable.style.color = "lime";
 }
 
+
+/* ================= BALANCE ================= */
+
+bIncome.textContent=totalInc;
+bExpense.textContent=totalExp;
+
+const balance=totalInc-totalExp;
+
+if(balance>0){
+    balanceText.textContent=`🟢 Vas ganando $${balance}`;
+    balanceText.style.color="lime";
+}
+else if(balance<0){
+    balanceText.textContent=`🔴 Estás perdiendo $${Math.abs(balance)}`;
+    balanceText.style.color="red";
+}
+else{
+    balanceText.textContent="⚪ En equilibrio";
+    balanceText.style.color="white";
+}
+
+
+/* ================= GRAFICO ================= */
+
+if(chart) chart.destroy();
+
+const ctx=document.getElementById("chart");
+
+chart=new Chart(ctx,{
+    type:"bar",
+    data:{
+        labels:["Ingresos","Gastos"],
+        datasets:[{
+            label:"Balance",
+            data:[totalInc,totalExp],
+            backgroundColor:["#22c55e","#ef4444"]
+        }]
+    },
+    options:{
+        responsive:true,
+        plugins:{
+            legend:{display:false}
+        }
+    }
+});
+
+}
+
+
 /* ================= BOTONES ================= */
 
 function addTask(){
 
-if(!taskInput.value) return;
+    if(!taskInput.value) return;
 
-tasks.push(taskInput.value);
-taskInput.value="";
+    tasks.push(taskInput.value);
+    taskInput.value="";
 
-saveData();
-render();
-
+    saveData();
+    render();
 }
 
 
 function addIncome(){
 
-if(!incomeDesc.value || !incomeAmount.value) return;
+    if(!incomeDesc.value || !incomeAmount.value) return;
 
-incomes.push({
-desc:incomeDesc.value,
-amount:incomeAmount.value
-});
+    incomes.push({
+        desc:incomeDesc.value,
+        amount:incomeAmount.value
+    });
 
-incomeDesc.value="";
-incomeAmount.value="";
+    incomeDesc.value="";
+    incomeAmount.value="";
 
-saveData();
-render();
-
+    saveData();
+    render();
 }
 
 
 function addExpense(){
 
-if(!descInput.value || !amountInput.value) return;
+    if(!descInput.value || !amountInput.value) return;
 
-expenses.push({
-desc:descInput.value,
-amount:amountInput.value
-});
+    expenses.push({
+        desc:descInput.value,
+        amount:amountInput.value
+    });
 
-descInput.value="";
-amountInput.value="";
+    descInput.value="";
+    amountInput.value="";
 
-saveData();
-render();
-
+    saveData();
+    render();
 }
 
 
-function addGoal(){
-
-if(!goalInput.value) return;
-
-goals.push(goalInput.value);
-goalInput.value="";
-
-saveData();
-render();
-
-}
-    
 function setBudget(){
 
     const input = document.getElementById("budgetInput");
@@ -379,6 +339,7 @@ function setBudget(){
     saveData();
     render();
 }
+
 
 /* ================= INICIO ================= */
 
