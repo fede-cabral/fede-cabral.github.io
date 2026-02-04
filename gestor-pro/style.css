@@ -68,3 +68,19 @@ footer {
     padding: 15px;
     background: #020617;
 }
+
+.btn-export{
+    margin-top:15px;
+    width:100%;
+    padding:10px;
+    background:#0ea5e9;
+    color:white;
+    border:none;
+    border-radius:8px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.btn-export:hover{
+    background:#0284c7;
+}
