@@ -80,14 +80,19 @@ const totalSpan = document.getElementById("total");
 
 const goalInput = document.getElementById("goalInput");
 const goalList = document.getElementById("goalList");
+const incomeDesc = document.getElementById("incomeDesc");
+const incomeAmount = document.getElementById("incomeAmount");
+const incomeList = document.getElementById("incomeList");
+const incomeTotal = document.getElementById("incomeTotal");
 
 // ====== GUARDAR ======
 function saveData() {
     localStorage.setItem("tasks", JSON.stringify(tasks));
     localStorage.setItem("expenses", JSON.stringify(expenses));
     localStorage.setItem("goals", JSON.stringify(goals));
-    localStorage.setItem("incomes", JSON.stringify(incomes));
+    localStorage.setItem("incomes", JSON.stringify(incomes)); // ✅ NUEVO
 }
+        
 // ====== RENDER ======
 function render() {
 
@@ -123,21 +128,24 @@ function render() {
 
     totalSpan.textContent = total;
 
-    // Ingresos
+  // Ingresos
 incomeList.innerHTML = "";
 let totalIncome = 0;
 
-incomes.forEach((inc,i)=>{
+incomes.forEach((inc, i) => {
+
     const li = document.createElement("li");
+
     li.textContent = `${inc.desc} - $${inc.amount}`;
 
-    li.onclick = ()=>{
+    li.onclick = () => {
         incomes.splice(i,1);
         saveData();
         render();
     };
 
     totalIncome += Number(inc.amount);
+
     incomeList.appendChild(li);
 });
 
@@ -182,23 +190,22 @@ function addExpense(){
 }
 
 function addGoal(){
-   function addIncome(){
+  function addIncome(){
 
-    if(incomeDesc.value==="" || incomeAmount.value==="") return;
+    if(incomeDesc.value === "" || incomeAmount.value === "") return;
 
     incomes.push({
         desc: incomeDesc.value,
         amount: incomeAmount.value
     });
 
-    incomeDesc.value="";
-    incomeAmount.value="";
+    incomeDesc.value = "";
+    incomeAmount.value = "";
 
     saveData();
     render();
 }
-// ====== INICIAR ======
-render();
+    
 </script>
     
 </body>
