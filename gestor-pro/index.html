@@ -44,5 +44,117 @@
     </footer>
 
     <script src="app.js"></script>
+
+    <script>
+// ====== DATOS ======
+let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+let expenses = JSON.parse(localStorage.getItem("expenses")) || [];
+let goals = JSON.parse(localStorage.getItem("goals")) || [];
+
+// ====== ELEMENTOS ======
+const taskInput = document.getElementById("taskInput");
+const taskList = document.getElementById("taskList");
+
+const descInput = document.getElementById("descInput");
+const amountInput = document.getElementById("amountInput");
+const expenseList = document.getElementById("expenseList");
+const totalSpan = document.getElementById("total");
+
+const goalInput = document.getElementById("goalInput");
+const goalList = document.getElementById("goalList");
+
+// ====== GUARDAR ======
+function saveData() {
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+    localStorage.setItem("expenses", JSON.stringify(expenses));
+    localStorage.setItem("goals", JSON.stringify(goals));
+}
+
+// ====== RENDER ======
+function render() {
+
+    // Tareas
+    taskList.innerHTML = "";
+    tasks.forEach((t, i) => {
+        const li = document.createElement("li");
+        li.textContent = t;
+        li.onclick = () => {
+            tasks.splice(i,1);
+            saveData();
+            render();
+        };
+        taskList.appendChild(li);
+    });
+
+    // Gastos
+    expenseList.innerHTML = "";
+    let total = 0;
+
+    expenses.forEach((e,i)=>{
+        const li = document.createElement("li");
+        li.textContent = `${e.desc} - $${e.amount}`;
+        li.onclick = ()=>{
+            expenses.splice(i,1);
+            saveData();
+            render();
+        };
+
+        total += Number(e.amount);
+        expenseList.appendChild(li);
+    });
+
+    totalSpan.textContent = total;
+
+    // Metas
+    goalList.innerHTML = "";
+    goals.forEach((g,i)=>{
+        const li = document.createElement("li");
+        li.textContent = g;
+        li.onclick = ()=>{
+            goals.splice(i,1);
+            saveData();
+            render();
+        };
+        goalList.appendChild(li);
+    });
+}
+
+// ====== BOTONES ======
+function addTask(){
+    if(taskInput.value==="") return;
+
+    tasks.push(taskInput.value);
+    taskInput.value="";
+    saveData();
+    render();
+}
+
+function addExpense(){
+    if(descInput.value==="" || amountInput.value==="") return;
+
+    expenses.push({
+        desc: descInput.value,
+        amount: amountInput.value
+    });
+
+    descInput.value="";
+    amountInput.value="";
+    saveData();
+    render();
+}
+
+function addGoal(){
+    if(goalInput.value==="") return;
+
+    goals.push(goalInput.value);
+    goalInput.value="";
+    saveData();
+    render();
+}
+
+// ====== INICIAR ======
+render();
+</script>
+    
 </body>
 </html>
