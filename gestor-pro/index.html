@@ -13,12 +13,27 @@
 <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
 
 </head>
+<div id="loginScreen" class="login">
 
+    <h2>🔐 Gestor Pro - FORJAX</h2>
+
+    <input id="userInput" placeholder="Usuario">
+
+    <button onclick="login()">Entrar</button>
+
+</div>
+    
 <body>
 
 <header>
+
     <h1>📊 Gestor Personal Pro</h1>
     <p>Operación Transeconómico</p>
+
+    <button onclick="logout()" class="logout-btn">
+        Cerrar Sesión
+    </button>
+
 </header>
 
 <main>
@@ -104,13 +119,42 @@
 
 <script>
 
+/* ================= LOGIN ================= */
+
+let currentUser = localStorage.getItem("currentUser");
+
+function login(){
+
+    const user = document.getElementById("userInput").value;
+
+    if(!user) return alert("Poné tu usuario");
+
+    localStorage.setItem("currentUser", user);
+
+    location.reload();
+}
+
+function logout(){
+
+    localStorage.removeItem("currentUser");
+
+    location.reload();
+}
+
+if(!currentUser){
+
+    document.body.innerHTML = document.getElementById("loginScreen").outerHTML;
+
+}
+
 /* ================= DATOS ================= */
 
-let tasks    = JSON.parse(localStorage.getItem("tasks"))    || [];
-let incomes  = JSON.parse(localStorage.getItem("incomes"))  || [];
-let expenses = JSON.parse(localStorage.getItem("expenses")) || [];
-let budget   = Number(localStorage.getItem("budget")) || 0;
+const prefix = currentUser + "_";
 
+let tasks    = JSON.parse(localStorage.getItem(prefix+"tasks"))    || [];
+let incomes  = JSON.parse(localStorage.getItem(prefix+"incomes"))  || [];
+let expenses = JSON.parse(localStorage.getItem(prefix+"expenses")) || [];
+let budget   = Number(localStorage.getItem(prefix+"budget")) || 0;
 
 /* ================= ELEMENTOS ================= */
 
@@ -138,10 +182,12 @@ const budgetAvailable = document.getElementById("budgetAvailable");
 /* ================= GUARDAR ================= */
 
 function saveData() {
-    localStorage.setItem("tasks", JSON.stringify(tasks));
-    localStorage.setItem("expenses", JSON.stringify(expenses));
-    localStorage.setItem("incomes", JSON.stringify(incomes));
-    localStorage.setItem("budget", budget);
+
+    localStorage.setItem(prefix+"tasks", JSON.stringify(tasks));
+    localStorage.setItem(prefix+"expenses", JSON.stringify(expenses));
+    localStorage.setItem(prefix+"incomes", JSON.stringify(incomes));
+    localStorage.setItem(prefix+"budget", budget);
+
 }
 
 
