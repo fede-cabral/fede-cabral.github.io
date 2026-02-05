@@ -69,6 +69,15 @@
 <h2>💰 Gastos</h2>
 
 <input id="descInput" placeholder="Descripción">
+
+<select id="categoryInput">
+  <option value="Comida">🍔 Comida</option>
+  <option value="Servicios">💡 Servicios</option>
+  <option value="Transporte">🚗 Transporte</option>
+  <option value="Estudio">📚 Estudio</option>
+  <option value="Otros">📦 Otros</option>
+</select>
+    
 <input id="amountInput" type="number" placeholder="Monto">
 
 <button onclick="addExpense()">Agregar</button>
@@ -168,6 +177,7 @@ const incomeTotal  = document.getElementById("incomeTotal");
 
 const descInput   = document.getElementById("descInput");
 const amountInput = document.getElementById("amountInput");
+    const categoryInput = document.getElementById("categoryInput");
 const expenseList = document.getElementById("expenseList");
 const expenseTotal= document.getElementById("expenseTotal");
 
@@ -250,7 +260,7 @@ let totalExp=0;
 expenses.forEach((e,i)=>{
 
     const li=document.createElement("li");
-    li.textContent=`${e.desc} - $${e.amount}`;
+    li.textContent=`${e.desc} (${e.category}) - $${e.amount}`;
 
     li.onclick=()=>{
         expenses.splice(i,1);
@@ -368,17 +378,18 @@ function addExpense(){
     if(!descInput.value || !amountInput.value) return;
 
     expenses.push({
-        desc:descInput.value,
-        amount:amountInput.value
+        desc: descInput.value,
+        amount: amountInput.value,
+        category: categoryInput.value
     });
 
     descInput.value="";
     amountInput.value="";
+    categoryInput.selectedIndex = 0;
 
     saveData();
     render();
 }
-
 
 function setBudget(){
 
