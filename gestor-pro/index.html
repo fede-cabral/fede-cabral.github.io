@@ -161,6 +161,9 @@ function logout(){
 }
 
 if(!currentUser){
+    app.style.display = "none";
+    document.getElementById("userInput").focus();
+}
 
     document.body.innerHTML = document.getElementById("loginScreen").outerHTML;
 
