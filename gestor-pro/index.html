@@ -13,7 +13,6 @@
 <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
 
 </head>
-<div id="loginScreen" class="login">
 
     <h2>🔐 Gestor Pro - FORJAX</h2>
 
@@ -24,7 +23,7 @@
 </div>
     
 <body>
-
+<div id="loginScreen" class="login">
 <header>
 
     <h1>📊 Gestor Personal Pro</h1>
@@ -134,15 +133,21 @@ let currentUser = localStorage.getItem("currentUser");
 
 function login(){
 
-    const user = document.getElementById("userInput").value;
+    const user = document.getElementById("userInput").value.trim();
 
-    if(!user) return alert("Poné tu usuario");
+    if(user.length < 3){
+        alert("El usuario debe tener al menos 3 caracteres");
+        return;
+    }
 
-    localStorage.setItem("currentUser", user);
+    if(!/^[a-zA-Z0-9_]+$/.test(user)){
+        alert("Solo letras, números o guión bajo");
+        return;
+    }
 
+    localStorage.setItem("currentUser", user.toLowerCase());
     location.reload();
 }
-
 function logout(){
 
     localStorage.removeItem("currentUser");
@@ -188,7 +193,12 @@ const balanceText = document.getElementById("balanceText");
 const budgetTotal = document.getElementById("budgetTotal");
 const budgetAvailable = document.getElementById("budgetAvailable");
 
+/* ================= FORMATEO ================= */
 
+function formatMoney(value){
+    return Number(value).toLocaleString("es-AR");
+}
+    
 /* ================= GUARDAR ================= */
 
 function saveData() {
@@ -235,7 +245,7 @@ let totalInc=0;
 incomes.forEach((e,i)=>{
 
     const li=document.createElement("li");
-    li.textContent=`${e.desc} - $${e.amount}`;
+    li.textContent=`${e.desc} - $${formatMoney(e.amount)}`;
 
     li.onclick=()=>{
         incomes.splice(i,1);
@@ -249,18 +259,20 @@ incomes.forEach((e,i)=>{
 
 });
 
-incomeTotal.textContent=totalInc;
-
+incomeTotal.textContent=formatMoney(totalInc);
 
 /* GASTOS */
 
 expenseList.innerHTML="";
 let totalExp=0;
 
+/* ORDENAR GASTOS DE MAYOR A MENOR */
+expenses.sort((a,b)=> b.amount - a.amount);
+
 expenses.forEach((e,i)=>{
 
     const li=document.createElement("li");
-    li.textContent=`${e.desc} (${e.category}) - $${e.amount}`;
+    li.textContent=`${e.desc} (${e.category}) - $${formatMoney(e.amount)}`;
 
     li.onclick=()=>{
         expenses.splice(i,1);
@@ -274,20 +286,22 @@ expenses.forEach((e,i)=>{
 
 });
 
-expenseTotal.textContent=totalExp;
+expenseTotal.textContent=formatMoney(totalExp);
 
 
 /* ================= PRESUPUESTO ================= */
 
 let spent = totalExp;
 
-budgetTotal.textContent = budget;
+budgetTotal.textContent = formatMoney(budget);
 
 let available = budget - spent;
 
-budgetAvailable.textContent = available;
+budgetAvailable.textContent = formatMoney(available);
 
 if(available < 0){
+    alert("⚠ Estás excediendo tu presupuesto mensual");
+}
     budgetAvailable.style.color = "red";
 }else{
     budgetAvailable.style.color = "lime";
@@ -296,17 +310,17 @@ if(available < 0){
 
 /* ================= BALANCE ================= */
 
-bIncome.textContent=totalInc;
-bExpense.textContent=totalExp;
+bIncome.textContent=formatMoney(totalInc);
+bExpense.textContent=formatMoney(totalExp);
 
 const balance=totalInc-totalExp;
 
 if(balance>0){
-    balanceText.textContent=`🟢 Vas ganando $${balance}`;
+    balanceText.textContent=`🟢 Vas ganando $${formatMoney(balance)}`;
     balanceText.style.color="lime";
 }
 else if(balance<0){
-    balanceText.textContent=`🔴 Estás perdiendo $${Math.abs(balance)}`;
+    balanceText.textContent=`🔴 Estás perdiendo $${formatMoney(Math.abs(balance))}`;
     balanceText.style.color="red";
 }
 else{
@@ -324,11 +338,11 @@ const ctx=document.getElementById("chart");
 chart=new Chart(ctx,{
     type:"bar",
     data:{
-        labels:["Ingresos","Gastos"],
+        labels:["Ingresos","Gastos","Balance"],
         datasets:[{
             label:"Balance",
-            data:[totalInc,totalExp],
-            backgroundColor:["#22c55e","#ef4444"]
+            data:[totalInc,totalExp,totalInc-totalExp],
+            backgroundColor:["#22c55e","#ef4444","#3b82f6"]
         }]
     },
     options:{
@@ -358,7 +372,14 @@ function addTask(){
 
 function addIncome(){
 
-    if(!incomeDesc.value || !incomeAmount.value) return;
+   if(!incomeDesc.value.trim()) return;
+
+const amount = Number(incomeAmount.value);
+
+if(isNaN(amount) || amount <= 0){
+    alert("Monto inválido");
+    return;
+}
 
     incomes.push({
         desc:incomeDesc.value,
@@ -372,14 +393,13 @@ function addIncome(){
     render();
 }
 
-
 function addExpense(){
 
     if(!descInput.value || !amountInput.value) return;
 
     expenses.push({
         desc: descInput.value,
-        amount: amountInput.value,
+        amount: amount,
         category: categoryInput.value
     });
 
@@ -452,6 +472,15 @@ function exportExcel(){
 
     XLSX.writeFile(wb,"forjax_finanzas.xlsx");
 }
+    document.addEventListener("keydown", function(e){
+
+    if(e.key === "Enter"){
+        if(document.activeElement === taskInput) addTask();
+        if(document.activeElement === incomeAmount) addIncome();
+        if(document.activeElement === amountInput) addExpense();
+    }
+
+});
     
 </script>
 
