@@ -445,6 +445,11 @@ function setBudget(){
 render();
 function exportExcel(){
 
+    let totalInc = incomes.reduce((sum,i)=> sum + Number(i.amount), 0);
+    let totalExp = expenses.reduce((sum,e)=> sum + Number(e.amount), 0);
+    let balance = totalInc - totalExp;
+    let disponible = budget - totalExp;
+
     let data = [
         ["GESTOR PERSONAL PRO - FORJAX"],
         ["Operacion Transeconomico"],
@@ -454,47 +459,51 @@ function exportExcel(){
     ];
 
     incomes.forEach(i=>{
-        data.push([i.desc, i.amount]);
+        data.push([i.desc, Number(i.amount)]);
     });
 
     data.push([]);
-    data.push(["Total Ingresos", bIncome.textContent]);
+    data.push(["Total Ingresos", totalInc]);
     data.push([]);
 
     data.push(["GASTOS"]);
-    data.push(["Descripcion","Monto"]);
+    data.push(["Descripcion","Categoria","Monto"]);
 
     expenses.forEach(e=>{
-        data.push([e.desc, e.amount]);
+        data.push([e.desc, e.category, Number(e.amount)]);
     });
 
     data.push([]);
-    data.push(["Total Gastos", bExpense.textContent]);
+    data.push(["Total Gastos", totalExp]);
     data.push([]);
-
     data.push(["PRESUPUESTO"]);
-    data.push(["Presupuesto", budget]);
-    data.push(["Disponible", budgetAvailable.textContent]);
-
+    data.push(["Presupuesto Mensual", budget]);
+    data.push(["Disponible", disponible]);
     data.push([]);
-    data.push(["BALANCE FINAL", balanceText.textContent]);
+    data.push(["BALANCE FINAL", balance]);
 
     let wb = XLSX.utils.book_new();
     let ws = XLSX.utils.aoa_to_sheet(data);
 
+    /* FORMATO DE COLUMNAS */
+    ws["!cols"] = [
+        { wch: 25 },
+        { wch: 20 },
+        { wch: 15 }
+    ];
+
+    /* FORMATO NUMERICO CON SEPARADOR DE MILES */
+    Object.keys(ws).forEach(cell => {
+        if(cell[0] === "!") return;
+        if(typeof ws[cell].v === "number"){
+            ws[cell].z = "#,##0";
+        }
+    });
+
     XLSX.utils.book_append_sheet(wb, ws, "Resumen");
 
-    XLSX.writeFile(wb,"forjax_finanzas.xlsx");
+    XLSX.writeFile(wb,"forjax_finanzas_pro.xlsx");
 }
-    document.addEventListener("keydown", function(e){
-
-    if(e.key === "Enter"){
-        if(document.activeElement === taskInput) addTask();
-        if(document.activeElement === incomeAmount) addIncome();
-        if(document.activeElement === amountInput) addExpense();
-    }
-
-});
     
 </script>
 </div>
