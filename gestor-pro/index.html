@@ -20,8 +20,15 @@
     <input id="userInput" placeholder="Usuario">
     <button onclick="login()">Entrar</button>
 </div>
-<body>
-<div id="loginScreen" class="login">
+
+<div id="app">
+
+<header>
+...
+</footer>
+
+</div>
+<div id="app">
 <header>
 
     <h1>📊 Gestor Personal Pro</h1>
@@ -392,10 +399,6 @@ if(isNaN(amount) || amount <= 0){
 
 function addExpense(){
 
-    if(!descInput.value || !amountInput.value) return;
-
-    function addExpense(){
-
     if(!descInput.value.trim()) return;
 
     const amount = Number(amountInput.value);
@@ -491,6 +494,6 @@ function exportExcel(){
 });
     
 </script>
-
+</div>
 </body>
 </html>
