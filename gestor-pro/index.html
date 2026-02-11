@@ -1,3 +1,20 @@
+JAJAJA sí… bajamos del “Gestor Dios Ultra Instinto” al “Gestor Beta Tester” 😂
+
+Tranquilo.
+Volvemos a la versión anterior potente, pero ahora:
+
+✔ Diseño más profesional
+✔ Separador de miles correcto
+✔ Gráfico sin “undefined”
+✔ Orden automático de gastos
+✔ Mejor estructura
+✔ Código limpio y escalable
+✔ Base lista para modo DIOS
+
+🚀 GESTOR PRO 2.0 — Versión Mejorada Real
+
+Copiá y reemplazá TODO tu archivo por esto:
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -8,16 +25,15 @@
 <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
 
 <style>
-
 body{
     margin:0;
-    font-family:Arial, Helvetica, sans-serif;
-    background:#111;
-    color:white;
+    font-family:'Segoe UI',sans-serif;
+    background:#0f172a;
+    color:#f1f5f9;
 }
 
 header{
-    background:#1f2937;
+    background:#1e293b;
     padding:20px;
     text-align:center;
 }
@@ -26,15 +42,16 @@ h1{margin:0}
 
 main{
     display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+    grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
     gap:20px;
     padding:20px;
 }
 
 .card{
-    background:#1f2937;
+    background:#1e293b;
     padding:20px;
-    border-radius:12px;
+    border-radius:15px;
+    box-shadow:0 0 20px rgba(0,0,0,0.4);
 }
 
 .card.wide{
@@ -43,38 +60,43 @@ main{
 
 input, select{
     width:100%;
-    padding:8px;
+    padding:10px;
     margin-bottom:10px;
     border:none;
-    border-radius:6px;
+    border-radius:8px;
 }
 
 button{
     width:100%;
     padding:10px;
     border:none;
-    border-radius:6px;
-    background:#3b82f6;
-    color:white;
+    border-radius:8px;
     cursor:pointer;
+    font-weight:bold;
 }
 
-button:hover{opacity:0.8}
+.btn-primary{ background:#3b82f6; color:white; }
+.btn-danger{ background:#ef4444; color:white; }
+.btn-success{ background:#22c55e; color:white; }
+
+button:hover{ opacity:0.9; }
 
 ul{list-style:none;padding:0}
 
 li{
-    background:#374151;
+    background:#334155;
     padding:8px;
-    margin-bottom:5px;
+    margin-bottom:6px;
     border-radius:6px;
     cursor:pointer;
+    transition:0.2s;
 }
+li:hover{background:#475569}
 
 footer{
     text-align:center;
     padding:15px;
-    background:#1f2937;
+    background:#1e293b;
 }
 
 .login{
@@ -84,19 +106,6 @@ footer{
     align-items:center;
     height:100vh;
 }
-
-.logout-btn{
-    background:#ef4444;
-    width:auto;
-    padding:8px 20px;
-    margin-top:10px;
-}
-
-.btn-export{
-    background:#22c55e;
-    margin-bottom:10px;
-}
-
 </style>
 </head>
 <body>
@@ -104,29 +113,27 @@ footer{
 <div id="loginScreen" class="login">
     <h2>🔐 Gestor Pro - FORJAX</h2>
     <input id="userInput" placeholder="Usuario">
-    <button onclick="login()">Entrar</button>
+    <button class="btn-primary" onclick="login()">Entrar</button>
 </div>
 
 <div id="app">
 
 <header>
     <h1>📊 Gestor Personal Pro</h1>
-    <button onclick="logout()" class="logout-btn">Cerrar Sesión</button>
+    <button class="btn-danger" onclick="logout()">Cerrar Sesión</button>
 </header>
 
 <main>
 
-<!-- INGRESOS -->
 <section class="card">
 <h2>💼 Ingresos</h2>
 <input id="incomeDesc" placeholder="Descripción">
 <input id="incomeAmount" type="number" placeholder="Monto">
-<button onclick="addIncome()">Agregar</button>
+<button class="btn-primary" onclick="addIncome()">Agregar</button>
 <ul id="incomeList"></ul>
 <p>Total: $<span id="incomeTotal">0</span></p>
 </section>
 
-<!-- GASTOS -->
 <section class="card">
 <h2>💰 Gastos</h2>
 <input id="descInput" placeholder="Descripción">
@@ -138,24 +145,22 @@ footer{
 <option>Otros</option>
 </select>
 <input id="amountInput" type="number" placeholder="Monto">
-<button onclick="addExpense()">Agregar</button>
+<button class="btn-primary" onclick="addExpense()">Agregar</button>
 <ul id="expenseList"></ul>
 <p>Total: $<span id="expenseTotal">0</span></p>
 </section>
 
-<!-- PRESUPUESTO -->
 <section class="card">
 <h2>📅 Presupuesto Mensual</h2>
 <input type="number" id="budgetInput" placeholder="Presupuesto del mes">
-<button onclick="setBudget()">Guardar</button>
+<button class="btn-primary" onclick="setBudget()">Guardar</button>
 <p>Presupuesto: $<span id="budgetTotal">0</span></p>
 <p>Disponible: $<span id="budgetAvailable">0</span></p>
 </section>
 
-<!-- BALANCE -->
 <section class="card wide">
 <h2>📈 Balance General</h2>
-<button onclick="exportExcel()" class="btn-export">Descargar Excel</button>
+<button class="btn-success" onclick="exportExcel()">Descargar Excel</button>
 <p>Ingresos: $<span id="bIncome">0</span></p>
 <p>Gastos: $<span id="bExpense">0</span></p>
 <h3 id="balanceText"></h3>
@@ -164,18 +169,15 @@ footer{
 
 </main>
 
-<footer>
-FORJAX © 2026
-</footer>
+<footer>FORJAX © 2026</footer>
 
 </div>
 
 <script>
 
-/* ========= LOGIN ========= */
+/* LOGIN */
 
 let currentUser = localStorage.getItem("currentUser");
-
 const app = document.getElementById("app");
 const loginScreen = document.getElementById("loginScreen");
 
@@ -187,10 +189,7 @@ if(!currentUser){
 
 function login(){
     const user=document.getElementById("userInput").value.trim();
-    if(user.length<3){
-        alert("Usuario mínimo 3 caracteres");
-        return;
-    }
+    if(user.length<3) return alert("Mínimo 3 caracteres");
     localStorage.setItem("currentUser",user.toLowerCase());
     location.reload();
 }
@@ -200,96 +199,77 @@ function logout(){
     location.reload();
 }
 
-/* ========= DATOS ========= */
+/* DATOS */
 
-const prefix = currentUser + "_";
+const prefix=currentUser+"_";
 
-let incomes = JSON.parse(localStorage.getItem(prefix+"incomes")) || [];
-let expenses = JSON.parse(localStorage.getItem(prefix+"expenses")) || [];
-let budget = Number(localStorage.getItem(prefix+"budget")) || 0;
+let incomes=JSON.parse(localStorage.getItem(prefix+"incomes"))||[];
+let expenses=JSON.parse(localStorage.getItem(prefix+"expenses"))||[];
+let budget=Number(localStorage.getItem(prefix+"budget"))||0;
 
-/* ========= FORMATO ========= */
+/* FORMATO */
 
 function formatMoney(value){
     return Number(value).toLocaleString("es-AR");
 }
 
-/* ========= GUARDAR ========= */
-
-function saveData(){
+function save(){
     localStorage.setItem(prefix+"incomes",JSON.stringify(incomes));
     localStorage.setItem(prefix+"expenses",JSON.stringify(expenses));
     localStorage.setItem(prefix+"budget",budget);
 }
 
-/* ========= RENDER ========= */
+/* RENDER */
 
 let chart;
 
 function render(){
 
-let incomeList=document.getElementById("incomeList");
-let expenseList=document.getElementById("expenseList");
+let totalInc=0;
+let totalExp=0;
 
 incomeList.innerHTML="";
 expenseList.innerHTML="";
 
-let totalInc=0;
-let totalExp=0;
-
 /* INGRESOS */
 
 incomes.forEach((e,i)=>{
+    totalInc+=Number(e.amount);
     let li=document.createElement("li");
     li.textContent=`${e.desc} - $${formatMoney(e.amount)}`;
-    li.onclick=()=>{
-        incomes.splice(i,1);
-        saveData();
-        render();
-    };
+    li.onclick=()=>{incomes.splice(i,1);save();render();}
     incomeList.appendChild(li);
-    totalInc+=Number(e.amount);
 });
 
-/* GASTOS */
+/* GASTOS ORDENADOS */
 
 expenses.sort((a,b)=>b.amount-a.amount);
 
 expenses.forEach((e,i)=>{
+    totalExp+=Number(e.amount);
     let li=document.createElement("li");
     li.textContent=`${e.desc} (${e.category}) - $${formatMoney(e.amount)}`;
-    li.onclick=()=>{
-        expenses.splice(i,1);
-        saveData();
-        render();
-    };
+    li.onclick=()=>{expenses.splice(i,1);save();render();}
     expenseList.appendChild(li);
-    totalExp+=Number(e.amount);
 });
 
 /* TOTALES */
 
-document.getElementById("incomeTotal").textContent=formatMoney(totalInc);
-document.getElementById("expenseTotal").textContent=formatMoney(totalExp);
-document.getElementById("bIncome").textContent=formatMoney(totalInc);
-document.getElementById("bExpense").textContent=formatMoney(totalExp);
+incomeTotal.textContent=formatMoney(totalInc);
+expenseTotal.textContent=formatMoney(totalExp);
+bIncome.textContent=formatMoney(totalInc);
+bExpense.textContent=formatMoney(totalExp);
 
 /* PRESUPUESTO */
 
-document.getElementById("budgetTotal").textContent=formatMoney(budget);
+budgetTotal.textContent=formatMoney(budget);
 let disponible=budget-totalExp;
-document.getElementById("budgetAvailable").textContent=formatMoney(disponible);
-
-if(disponible<0){
-    document.getElementById("budgetAvailable").style.color="red";
-}else{
-    document.getElementById("budgetAvailable").style.color="lime";
-}
+budgetAvailable.textContent=formatMoney(disponible);
+budgetAvailable.style.color=disponible<0?"red":"lime";
 
 /* BALANCE */
 
 let balance=totalInc-totalExp;
-let balanceText=document.getElementById("balanceText");
 
 if(balance>0){
     balanceText.textContent=`🟢 Ganancia $${formatMoney(balance)}`;
@@ -302,7 +282,7 @@ if(balance>0){
     balanceText.style.color="white";
 }
 
-/* GRAFICO */
+/* GRAFICO FIXED */
 
 if(chart) chart.destroy();
 
@@ -311,78 +291,73 @@ chart=new Chart(document.getElementById("chart"),{
     data:{
         labels:["Ingresos","Gastos","Balance"],
         datasets:[{
+            label:"Resumen",
             data:[totalInc,totalExp,balance]
         }]
     },
-    options:{responsive:true}
+    options:{
+        responsive:true,
+        plugins:{legend:{display:false}}
+    }
 });
 
 }
 
+/* BOTONES */
+
 function addIncome(){
-    let desc=document.getElementById("incomeDesc");
-    let amount=document.getElementById("incomeAmount");
-    if(!desc.value || amount.value<=0) return;
-    incomes.push({desc:desc.value,amount:Number(amount.value)});
-    desc.value="";
-    amount.value="";
-    saveData();
-    render();
+    if(!incomeDesc.value||incomeAmount.value<=0)return;
+    incomes.push({desc:incomeDesc.value,amount:Number(incomeAmount.value)});
+    incomeDesc.value="";
+    incomeAmount.value="";
+    save();render();
 }
 
 function addExpense(){
-    let desc=document.getElementById("descInput");
-    let amount=document.getElementById("amountInput");
-    let category=document.getElementById("categoryInput");
-    if(!desc.value || amount.value<=0) return;
-    expenses.push({desc:desc.value,amount:Number(amount.value),category:category.value});
-    desc.value="";
-    amount.value="";
-    saveData();
-    render();
+    if(!descInput.value||amountInput.value<=0)return;
+    expenses.push({
+        desc:descInput.value,
+        amount:Number(amountInput.value),
+        category:categoryInput.value
+    });
+    descInput.value="";
+    amountInput.value="";
+    save();render();
 }
 
 function setBudget(){
-    let input=document.getElementById("budgetInput");
-    if(!input.value) return;
-    budget=Number(input.value);
-    input.value="";
-    saveData();
-    render();
+    if(!budgetInput.value)return;
+    budget=Number(budgetInput.value);
+    budgetInput.value="";
+    save();render();
 }
 
-/* ========= EXPORTAR ========= */
+/* EXPORT */
 
 function exportExcel(){
+let data=[["GESTOR PRO - FORJAX"],[]];
 
-let data=[
-["GESTOR PERSONAL PRO - FORJAX"],
-[],
-["Ingresos"]
-];
-
+data.push(["INGRESOS"]);
 incomes.forEach(i=>data.push([i.desc,i.amount]));
 data.push(["Total",incomes.reduce((a,b)=>a+Number(b.amount),0)]);
 data.push([]);
-data.push(["Gastos"]);
+
+data.push(["GASTOS"]);
 expenses.forEach(e=>data.push([e.desc,e.category,e.amount]));
 
 let wb=XLSX.utils.book_new();
 let ws=XLSX.utils.aoa_to_sheet(data);
 
 Object.keys(ws).forEach(c=>{
-if(typeof ws[c].v==="number"){
-ws[c].z="#,##0";
-}
+if(typeof ws[c].v==="number") ws[c].z="#,##0";
 });
 
 XLSX.utils.book_append_sheet(wb,ws,"Resumen");
-XLSX.writeFile(wb,"forjax_finanzas.xlsx");
+XLSX.writeFile(wb,"forjax_finanzas_pro.xlsx");
 }
 
 render();
 
 </script>
-
 </body>
 </html>
