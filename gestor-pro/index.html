@@ -13,15 +13,13 @@
 <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
 
 </head>
+<body>
 
+<div id="loginScreen" class="login">
     <h2>🔐 Gestor Pro - FORJAX</h2>
-
     <input id="userInput" placeholder="Usuario">
-
     <button onclick="login()">Entrar</button>
-
 </div>
-    
 <body>
 <div id="loginScreen" class="login">
 <header>
@@ -301,7 +299,6 @@ budgetAvailable.textContent = formatMoney(available);
 
 if(available < 0){
     alert("⚠ Estás excediendo tu presupuesto mensual");
-}
     budgetAvailable.style.color = "red";
 }else{
     budgetAvailable.style.color = "lime";
@@ -396,6 +393,17 @@ if(isNaN(amount) || amount <= 0){
 function addExpense(){
 
     if(!descInput.value || !amountInput.value) return;
+
+    function addExpense(){
+
+    if(!descInput.value.trim()) return;
+
+    const amount = Number(amountInput.value);
+
+    if(isNaN(amount) || amount <= 0){
+        alert("Monto inválido");
+        return;
+    }
 
     expenses.push({
         desc: descInput.value,
