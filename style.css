@@ -1,0 +1,354 @@
+/* --- VARIABLES Y RESET --- */
+:root {
+  --bg-color: #0f172a;      /* Fondo oscuro moderno */
+  --card-bg: #1e293b;       /* Color de las tarjetas */
+  --text-primary: #f8fafc;  /* Texto blanco/claro */
+  --text-secondary: #94a3b8;/* Texto gris para detalles */
+  --accent-color: #38bdf8;  /* Color de acento (un azul/celeste tipo 'tech') */
+  --font-stack: 'Inter', sans-serif;
+  --container-width: 900px; /* Ancho máximo del contenido */
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font-stack);
+  background-color: var(--bg-color);
+  color: var(--text-primary);
+  line-height: 1.6;
+}
+
+/* --- UTILIDADES --- */
+.container {
+  width: 90%;
+  max-width: var(--container-width);
+  margin: 0 auto;
+}
+
+a { text-decoration: none; color: inherit; transition: color 0.3s; }
+
+/* --- HERO SECTION (Encabezado) --- */
+.hero {
+  padding: 5rem 0;
+  background: radial-gradient(circle at top right, #1e293b 0%, var(--bg-color) 70%);
+  border-bottom: 1px solid #334155;
+}
+
+.hero-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 3rem;
+}
+
+.hero-text h1 {
+  font-size: 3rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  margin-bottom: 0.5rem;
+  background: linear-gradient(to right, #fff, var(--accent-color));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.hero-text h2 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--accent-color);
+  margin-bottom: 1.5rem;
+}
+
+.summary {
+  color: var(--text-secondary);
+  font-size: 1.1rem;
+  max-width: 500px;
+  margin-bottom: 2rem;
+}
+
+/* Botones Sociales y CV */
+.social-links {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.btn-social, .btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  border-radius: 0.5rem;
+  transition: all 0.3s;
+}
+
+.btn-social {
+  width: 45px;
+  height: 45px;
+  font-size: 1.2rem;
+  background-color: var(--card-bg);
+  color: var(--text-secondary);
+  border: 1px solid #334155;
+}
+
+.btn-social:hover {
+  color: var(--accent-color);
+  border-color: var(--accent-color);
+  transform: translateY(-3px);
+}
+
+.btn-primary {
+  padding: 0 1.5rem;
+  height: 45px;
+  background-color: var(--accent-color);
+  color: var(--bg-color);
+  gap: 0.5rem;
+}
+
+.btn-primary:hover {
+  background-color: #0ea5e9;
+  transform: translateY(-3px);
+  box-shadow: 0 4px 15px rgba(56, 189, 248, 0.3);
+}
+
+/* Imagen del Hero */
+.hero-image-container {
+  flex-shrink: 0;
+}
+
+.hero-image {
+  width: 250px;
+  height: 250px;
+  object-fit: cover;
+  /* Recorte circular moderno */
+  border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+  border: 3px solid var(--accent-color);
+  box-shadow: 0 0 30px rgba(56, 189, 248, 0.2);
+}
+
+/* --- SECCIONES GENERALES --- */
+.section { padding: 4rem 0; }
+.section-title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin-bottom: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+.section-title i { color: var(--accent-color); }
+
+/* --- SOBRE MÍ --- */
+.about p { color: var(--text-secondary); font-size: 1.05rem; }
+.about strong { color: var(--text-primary); font-weight: 600; }
+
+/* --- SKILLS (TAGS) --- */
+.skill-category { margin-bottom: 2rem; }
+.skill-category h4 {
+  font-size: 1rem;
+  color: var(--text-secondary);
+  margin-bottom: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.tags { display: flex; flex-wrap: wrap; gap: 0.75rem; }
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background-color: var(--card-bg);
+  border: 1px solid #334155;
+  border-radius: 2rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  transition: all 0.3s;
+}
+.tag:hover {
+  border-color: var(--accent-color);
+  color: var(--accent-color);
+  transform: translateY(-2px);
+}
+/* Colores específicos para iconos de marca (opcional) */
+.tag.html:hover i { color: #e34f26; }
+.tag.css:hover i { color: #1572b6; }
+.tag.js:hover i { color: #f7df1e; }
+.tag.git:hover i { color: #f05032; }
+
+/* --- PROYECTOS --- */
+.project-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 2rem;
+}
+
+.project-card {
+  background-color: var(--card-bg);
+  border: 1px solid #334155;
+  border-radius: 1rem;
+  padding: 2rem;
+  transition: all 0.3s;
+}
+
+.project-card:hover {
+  border-color: var(--accent-color);
+  transform: translateY(-5px);
+  box-shadow: 0 10px 30px -10px rgba(0,0,0,0.5);
+}
+
+.project-card.featured {
+  border-color: var(--accent-color);
+  background: linear-gradient(to bottom right, var(--card-bg), rgba(56, 189, 248, 0.05));
+}
+
+.project-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+}
+
+.project-header h4 { font-size: 1.25rem; font-weight: 700; }
+
+.badge {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  padding: 0.25rem 0.75rem;
+  border-radius: 1rem;
+  background-color: rgba(56, 189, 248, 0.1);
+  color: var(--accent-color);
+}
+
+.project-card p { color: var(--text-secondary); margin-bottom: 1.5rem; }
+.project-card ul { list-style: none; margin-bottom: 2rem; }
+.project-card li { color: var(--text-secondary); margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem; }
+.project-card li i { color: var(--accent-color); font-size: 0.8rem; }
+
+.project-links { display: flex; gap: 1rem; }
+.btn-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.25rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  font-size: 0.9rem;
+  background-color: var(--accent-color);
+  color: var(--bg-color);
+  transition: all 0.3s;
+}
+.btn-link:hover { background-color: #0ea5e9; }
+.btn-link-secondary {
+  background-color: transparent;
+  color: var(--text-primary);
+  border: 1px solid #334155;
+}
+.btn-link-secondary:hover { border-color: var(--accent-color); color: var(--accent-color); background-color: var(--card-bg); }
+
+/* --- FOOTER --- */
+.footer {
+  padding: 3rem 0;
+  text-align: center;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  border-top: 1px solid #334155;
+}
+.footer i { color: #ef4444; }
+
+/* --- RESPONSIVE (Para celulares) --- */
+@media (max-width: 768px) {
+  .hero-content {
+    flex-direction: column-reverse; /* Foto arriba del texto en móvil */
+    text-align: center;
+    gap: 2rem;
+  }
+  .hero-text h1 { font-size: 2.5rem; }
+  .social-links { justify-content: center; }
+  .hero-image { width: 200px; height: 200px; }
+  .section-title { justify-content: center; }
+  .tags { justify-content: center; }
+  .project-header { flex-direction: column; gap: 0.5rem; }
+}
+/* --- ESTILOS DE IMPRESIÓN (Para Guardar como PDF) --- */
+/* --- ESTILOS DE IMPRESIÓN (Para Guardar como PDF) --- */
+@media print {
+  
+  /* 1. FORZAR VISIBILIDAD DE LA FOTO */
+  .hero-image-container, 
+  .hero-image {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+  }
+
+  .hero-image {
+    width: 150px;
+    height: 150px;
+    border: 2px solid #333; /* Borde simple para que destaque */
+    border-radius: 50%; /* Redonda */
+    object-fit: cover;
+  }
+
+  /* 2. Ajuste de Layout del Encabezado */
+  .hero-content {
+    flex-direction: row; /* Mantener foto y texto lado a lado */
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 2rem;
+  }
+
+  .hero-text {
+    flex: 1; /* Que el texto ocupe el resto del espacio */
+  }
+
+  /* 3. Resetear colores (Blanco y Negro) */
+  :root {
+    --bg-color: #ffffff;
+    --card-bg: #ffffff;
+    --text-primary: #000000;
+    --text-secondary: #333333;
+    --accent-color: #000000;
+  }
+
+  body {
+    background-color: #fff;
+    color: #000;
+    font-size: 11pt;
+    -webkit-print-color-adjust: exact; /* Importante para Chrome */
+    print-color-adjust: exact;
+  }
+
+  /* 4. Ocultar botones y elementos innecesarios */
+  .btn-primary, 
+  .btn-social, 
+  .btn-link, 
+  .footer {
+    display: none !important;
+  }
+
+  /* 5. Limpieza general */
+  .container { width: 100%; max-width: 100%; padding: 0; margin: 0; }
+  .hero { padding: 1rem 0; border-bottom: 2px solid #000; background: none !important; }
+  
+  .hero-text h1 { font-size: 22pt; color: #000; margin: 0; }
+  .hero-text h2 { font-size: 14pt; color: #444; margin-bottom: 1rem; }
+  .summary { color: #000; font-size: 10pt; max-width: 100%; }
+
+  .section { padding: 1rem 0; page-break-inside: avoid; }
+  .section-title { font-size: 14pt; border-bottom: 1px solid #ccc; margin-bottom: 10px; }
+  
+  /* Proyectos en lista */
+  .project-grid { display: block; }
+  .project-card { border: none; padding: 0; margin-bottom: 1rem; box-shadow: none; page-break-inside: avoid; }
+  .project-header h4 { display: inline-block; margin-right: 10px; }
+  .badge { border: 1px solid #000; color: #000; background: none; }
+  
+  .tag { border: 1px solid #ccc; color: #000; background: #fff; font-size: 8pt; padding: 2px 8px; }
+
+  /* Mostrar enlaces como texto */
+  a[href^="http"]:after { content: " (" attr(href) ")"; font-size: 0.8em; color: #555; }
+}
